@@ -7,5 +7,6 @@
         public string Model { get; set; }
         public int Level { get; set; }
         public int Wear { get; set; }
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

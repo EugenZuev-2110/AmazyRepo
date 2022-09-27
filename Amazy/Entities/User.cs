@@ -8,5 +8,6 @@
         public string Password { get; set; }
         public string JWT { get; set; }
         public int AMTLimit { get; set; }
+        public List<Sneaker> Sneakers { get; set; } = new List<Sneaker>();
     }
 }

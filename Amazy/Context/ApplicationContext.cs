@@ -10,6 +10,7 @@ namespace Amazy.Context
 
         public ApplicationContext()
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -17,6 +18,14 @@ namespace Amazy.Context
         {
             optionsBuilder.UseMySql("server=localhost;user=root;password=322398;database=amazydb;",
                 new MySqlServerVersion(new Version(8, 0, 30)));
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Sneakers)
+                .WithMany(s => s.Users)
+                .UsingEntity(p => p.ToTable("UsersSneakers"));
         }
     }
 }
