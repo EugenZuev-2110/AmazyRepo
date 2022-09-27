@@ -1,3 +1,5 @@
+using Amazy.Context;
+using Amazy.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amazy.Controllers
@@ -18,16 +20,25 @@ namespace Amazy.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet(Name = "GetUser")]
+        public User Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return new User { AMTLimit = 20, Id = 1, JWT = "303", Login = "Zhenya", Password = "1111", Name = "Eugen" };
+        }
+
+        [HttpPost(Name = "PostUser")]
+        public User Post()
+        {
+            var user1 = new User { AMTLimit = 10, Name = "Niko", JWT = "101", Login = "Nikko", Password = "2222" };
+            var user2 = new User { AMTLimit = 50, Name = "Viko", JWT = "501", Login = "Vikko", Password = "3333" };
+
+            using (ApplicationContext context = new ApplicationContext())
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                context.Users.AddRange(user1, user2);
+                context.SaveChanges();
+            }
+
+            return user2;
         }
     }
 }
